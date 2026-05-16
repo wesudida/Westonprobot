@@ -1,0 +1,4 @@
+{
+  "start": "python derivbot_phase1.py",
+  "install": "pip install -r requirements.txt"
+}
