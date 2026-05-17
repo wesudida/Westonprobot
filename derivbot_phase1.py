@@ -168,6 +168,7 @@ async def start(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
     )
 
 def main():
+    print("🚀 BOT BOOTING - IF YOU SEE THIS, CODE IS RUNNING")
     app = Application.builder().token(TELEGRAM_TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
