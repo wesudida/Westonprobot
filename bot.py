@@ -1307,7 +1307,6 @@ async def cmd_msg(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
         name  = parts[1].strip()
         state.watchlist[sym] = name
         ws_manager.add_instrument(sym, name)
-        await update.message.reply_text(
             f"✅ Added {name} ({sym})\n"
             f"Total: {len(state.watchlist)} instruments",
             reply_markup=main_kb())
@@ -1335,20 +1334,16 @@ async def run_web_server():
     log.info(f"Health check server running on port {port}")
 
 async def run_bot():
-    """Run Telegram bot"""
     app = Application.builder().token(TELEGRAM_TOKEN).build()
+
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CallbackQueryHandler(cmd_btn))
-    app.add_handler(MessageHandler(
-        filters.TEXT & ~filters.COMMAND, cmd_msg))
-    await app.initialize()
-    await app.start()
-    await app.updater.start_polling(
+    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, cmd_msg))
+
+    await app.run_polling(
         allowed_updates=Update.ALL_TYPES,
-        drop_pending_updates=True)
-    log.info("✅ Bot running! Open Telegram and send /start")
-    # Keep running forever
-    await asyncio.Event().wait()
+        drop_pending_updates=True
+    )
 
 async def main_async():
     print("\n" + "=" * 55)
