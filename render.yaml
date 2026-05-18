@@ -1,0 +1,13 @@
+services:
+  - type: worker
+    name: derivbot-pro
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: DERIV_DEMO_TOKEN
+        sync: false
+      - key: DERIV_REAL_TOKEN
+        sync: false
