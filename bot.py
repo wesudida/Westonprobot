@@ -1332,7 +1332,13 @@ async def run_web_server():
     site = web.TCPSite(runner, "0.0.0.0", port)
     await site.start()
     log.info(f"Health check server running on port {port}")
+import asyncio
 
+async def start_background_tasks(app):
+    ws_manager.app_ref = app
+
+    asyncio.create_task(ws_manager.load_all_history())
+    asyncio.create_task(ws_manager.run_live())
 async def run_bot():
     app = Application.builder().token(TELEGRAM_TOKEN).build()
 
@@ -1359,9 +1365,8 @@ async def main_async():
         run_web_server(),
         run_bot()
     )
-
-def main():
-    asyncio.run(main_async())
+  def main():
+    run_bot()
 
 if __name__ == "__main__":
     main()
